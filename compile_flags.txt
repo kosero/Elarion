@@ -1,0 +1,7 @@
+-lraylib
+-std=c11 
+-pedantic 
+-Wall 
+-Wextra 
+-O3 
+-Iinc
