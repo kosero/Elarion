@@ -8,7 +8,7 @@ BUILD_DIR = build
 
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-TARGET = $(BUILD_DIR)/main
+TARGET = $(BUILD_DIR)/Elarion
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
