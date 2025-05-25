@@ -1,0 +1,12 @@
+-lraylib
+-pedantic
+-Wconversion
+-Wnull-dereference
+-std=c++20
+-pipe
+-fno-common
+-fstack-protector-strong
+-Wall
+-Wextra
+-O3
+-Iinc
