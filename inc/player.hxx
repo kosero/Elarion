@@ -23,7 +23,7 @@ struct Player
 class PlayerManager
 {
 public:
-  Player Init(Camera2D camera, Vector2 position, float speed, Vector2 hitbox);
+  Player Init(Vector2 position, float speed, Vector2 hitbox);
   void Refresh(Player *player, Animation *anim, Animator *animator,
                float delta);
 };

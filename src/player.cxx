@@ -4,15 +4,16 @@
 #include "animation.hxx"
 #include "player.hxx"
 
-Player PlayerManager::Init(Camera2D camera, Vector2 position, float speed,
-                           Vector2 hitbox)
+Player PlayerManager::Init(Vector2 position, float speed, Vector2 hitbox)
 {
   Player p;
+  Camera2D c;
+
   p.position = position;
   p.speed = speed;
   p.hitbox = hitbox;
 
-  p.camera = camera;
+  p.camera = c;
   p.camera.zoom = 1.0f;
   p.camera.rotation = 0;
 
@@ -29,8 +30,8 @@ static void set_anim_if_needed(Animation *anim, int16_t start, int16_t end)
   }
 }
 
-static void apply_walking_anim(Animation *anim, Animator *animator, float delta,
-                               int16_t start, int16_t end)
+static void apply_anim(Animation *anim, Animator *animator, float delta,
+                       int16_t start, int16_t end)
 {
   set_anim_if_needed(anim, start, end);
   animator->Refresh(anim, delta);
@@ -54,15 +55,22 @@ void PlayerManager::Refresh(Player *player, Animation *anim, Animator *animator,
   player->velocity = {0.0f, 0.0f};
   player->state.WALKING = false;
 
+  int16_t last_anim_start = anim->frame.first;
+
   for (const auto &dir : directions)
   {
     if (dir.active)
     {
       player->velocity = dir.velocity;
-      apply_walking_anim(anim, animator, delta, dir.anim_start, dir.anim_end);
+      apply_anim(anim, animator, delta, dir.anim_start, dir.anim_end);
       player->state.WALKING = true;
       break;
     }
+  }
+
+  if (!player->state.WALKING)
+  {
+    anim->frame.current = last_anim_start;
   }
 
   player->position.x += player->velocity.x * delta;
