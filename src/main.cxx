@@ -2,6 +2,7 @@
 
 #include "animation.hxx"
 #include "main.hxx"
+#include "player.hxx"
 
 int main(void)
 {
@@ -13,19 +14,33 @@ int main(void)
   Animation anim;
   Animator animator;
   Texture2D texture = LoadTexture("./assets/character.png");
-  animator.Init(&anim, {0, 3, 0}, 0.1f, {16, 16}, false);
+  animator.Init(&anim, anim.frame, 0.1f, {16, 16}, false);
+
+  Camera2D cam;
+  PlayerManager pmng;
+  Player player = pmng.Init(cam, {0, 0}, 300.0f, {16, 16});
 
   while (!WindowShouldClose())
   {
-    animator.Refresh(&anim);
+    float delta = GetFrameTime();
+
+    Vector2 pos = {player.position.x - (anim.resolution.x * 3),
+                   player.position.y - (anim.resolution.y * 3)};
+
     BeginDrawing();
     ClearBackground(FLOOR);
+    BeginMode2D(player.camera);
 
-    animator.Draw(&anim, texture, {0, 0}, 5, 4);
+    pmng.Refresh(&player, &anim, &animator, delta);
+    animator.Draw(&anim, texture, pos, 5, 4);
 
+    DrawRectangle((SWIDTH - 100) / 2, (SHEIGHT - 100) % 2, 100, 100, RED);
+
+    EndMode2D();
     EndDrawing();
   }
 
+  UnloadTexture(texture);
   CloseWindow();
   return 0;
 }

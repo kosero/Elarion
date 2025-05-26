@@ -1,6 +1,7 @@
-#include "animation.hxx"
 #include <cstdint>
 #include <raylib.h>
+
+#include "animation.hxx"
 
 void Animator::Init(Animation *anim, Frame frame, float speed,
                     Vector2 resolution, bool is_flipped)
@@ -12,10 +13,9 @@ void Animator::Init(Animation *anim, Frame frame, float speed,
   anim->is_flipped = is_flipped;
 }
 
-void Animator::Refresh(Animation *anim)
+void Animator::Refresh(Animation *anim, float delta)
 {
-  float dt = GetFrameTime();
-  anim->duration_left -= dt;
+  anim->duration_left -= delta;
 
   if (anim->duration_left <= 0.0f)
   {
@@ -29,7 +29,7 @@ void Animator::Refresh(Animation *anim)
   }
 }
 
-Rectangle Animator::get_frame_rect(Animation *anim, int16_t frames_per_row)
+static Rectangle get_frame_rect(Animation *anim, int16_t frames_per_row)
 {
   int16_t frame_index_x = anim->frame.current % frames_per_row;
   int16_t frame_index_y = anim->frame.current / frames_per_row;
