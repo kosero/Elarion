@@ -1,5 +1,5 @@
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef ANIMATION_HXX
+#define ANIMATION_HXX
 
 #include <cstdint>
 #include <raylib.h>

@@ -47,9 +47,9 @@ void PlayerManager::Refresh(Player *player, Animation *anim, Animator *animator,
     int16_t anim_start;
     int16_t anim_end;
   } directions[] = {
-      {IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT), {-player->speed, 0.0f}, 8, 11},
-      {IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT), {player->speed, 0.0f}, 24, 27},
-      {IsKeyDown(KEY_W) || IsKeyDown(KEY_UP), {0.0f, -player->speed}, 16, 19},
+      {IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT), {-player->speed, 0.0f}, 4, 7},
+      {IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT), {player->speed, 0.0f}, 12, 15},
+      {IsKeyDown(KEY_W) || IsKeyDown(KEY_UP), {0.0f, -player->speed}, 8, 11},
       {IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN), {0.0f, player->speed}, 0, 3}};
 
   player->velocity = {0.0f, 0.0f};

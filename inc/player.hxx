@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER_HXX
+#define PLAYER_HXX
 
 #include "animation.hxx"
 #include <raylib.h>

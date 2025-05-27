@@ -55,7 +55,5 @@ void Animator::Draw(Animation *anim, Texture2D texture, Vector2 position,
   float scaled_height = anim->resolution.y * static_cast<float>(scale);
   Rectangle dest{position.x, position.y, scaled_width, scaled_height};
 
-  Vector2 origin = {0, 0};
-
-  DrawTexturePro(texture, src, dest, origin, 0.0f, WHITE);
+  DrawTexturePro(texture, src, dest, {0, 0}, 0.0f, WHITE);
 }
