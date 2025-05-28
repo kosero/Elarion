@@ -4,32 +4,24 @@ project(Elarion LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-include_directories(inc)
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 
 file(GLOB_RECURSE SOURCES src/*.cxx)
+file(GLOB_RECURSE HEADERS inc/*.hxx)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_executable(Elarion ${SOURCES} ${HEADERS})
 
-add_compile_options(
-    -Wall
-    -Wextra
-    -pedantic
-    -O3
-    -Wconversion
-    -Wnull-dereference
-    -pipe
-    -fno-common
-    -fstack-protector-strong
+target_include_directories(Elarion PRIVATE inc /usr/local/include)
+
+target_compile_options(Elarion PRIVATE
+    -Wall -Wextra -pedantic -Wconversion -Wnull-dereference
+    -pipe -fno-common -fstack-protector-strong
 )
 
-add_executable(Elarion ${SOURCES})
-
-target_link_libraries(Elarion
-    raylib
-    m
-    dl
-    pthread
-    GL
-    enet
+target_link_libraries(Elarion PRIVATE
+    /usr/local/lib/libraylib.a
+    m dl pthread GL enet
 )
+
+file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
+
