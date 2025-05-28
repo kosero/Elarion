@@ -3,26 +3,35 @@
 #include "animation.hxx"
 #include "main.hxx"
 #include "player.hxx"
+#include "ui/button.hxx"
 
-static void DrawGameScreen(Player &player, Animation &anim, Animator &animator,
-                           PlayerManager &pmng, Texture2D &texture)
+static void DrawGameScreen(t_player &splayer, t_animation &sanimation,
+                           c_animation &canimation, c_player &cplayer,
+                           Texture2D &texture, float delta)
 {
-  float delta = GetFrameTime();
 
-  Vector2 pos = {player.position.x - (anim.resolution.x * 3),
-                 player.position.y - (anim.resolution.y * 3)};
+  Vector2 pos = {splayer.position.x - (sanimation.resolution.x * 3),
+                 splayer.position.y - (sanimation.resolution.y * 3)};
 
   ClearBackground(FLOOR);
   DrawRectangle((SWIDTH - 100) / 2, (SHEIGHT - 100) % 2, 100, 100, RED);
 
-  pmng.Refresh(&player, &anim, &animator, delta);
-  animator.Draw(&anim, texture, pos, 5, 4);
+  cplayer.Refresh(&splayer, &sanimation, &canimation, delta);
+  canimation.Draw(sanimation, texture, pos, 5, 4);
 }
 
-static void DrawMenuScreen(int screenWidth, int screenHeight)
+static void DrawMenuScreen(t_button &button, c_button &cbutton, Vector2 &screen,
+                           Vector2 &mouse_position,
+                           t_screen_state *current_screen)
 {
+  Vector2 pos{(screen.x - button.size.x) / 2, (screen.y - button.size.y) / 2};
   ClearBackground(BG);
-  DrawText("Elarion", (screenWidth / 2), (screenHeight / 2), 20, BLACK);
+  cbutton.draw(button, pos, mouse_position);
+
+  if (cbutton.is_click(button, pos, mouse_position))
+  {
+    *current_screen = SCREEN_GAME;
+  }
 }
 
 int main(void)
@@ -33,20 +42,40 @@ int main(void)
   InitWindow(SWIDTH, SHEIGHT, "Elarion");
   SetExitKey(KEY_NULL);
 
-  Animation anim;
-  Animator animator;
+  t_animation sanimation;
+  c_animation canimation;
   Texture2D texture = LoadTexture("./assets/player.png");
-  animator.Init(&anim, anim.frame, 0.1f, {16, 16}, false);
+  Vector2 hitbox = {16, 16};
+  canimation.Init(sanimation, sanimation.frame, 0.1f, hitbox, false);
 
-  PlayerManager pmng;
-  Player player = pmng.Init({0, 0}, 300.0f, {16.0f, 16.0f});
+  t_player splayer;
+  c_player cplayer;
+  Camera2D c;
 
-  ScreenState current_screen = SCREEN_GAME;
+  splayer.hitbox = {16, 16};
+
+  splayer.camera = c;
+  splayer.camera.zoom = 1.0f;
+  splayer.camera.rotation = 0;
+
+  Vector2 mouse;
+  Vector2 screen;
+
+  t_button button;
+  c_button cbutton;
+  Font font = LoadFont("assets/font.ttf");
+  button.font_family = font;
+  button.text = "Resume";
+
+  t_screen_state current_screen = SCREEN_GAME;
 
   while (!WindowShouldClose())
   {
-    int sW = GetScreenWidth();
-    int sH = GetScreenHeight();
+    screen = {static_cast<float>(GetScreenWidth()),
+              static_cast<float>(GetScreenHeight())};
+
+    mouse = GetMousePosition();
+    float delta = GetFrameTime();
 
     switch (current_screen)
     {
@@ -66,13 +95,13 @@ int main(void)
     switch (current_screen)
     {
     case SCREEN_GAME:
-      BeginMode2D(player.camera);
-      DrawGameScreen(player, anim, animator, pmng, texture);
+      BeginMode2D(splayer.camera);
+      DrawGameScreen(splayer, sanimation, canimation, cplayer, texture, delta);
       EndMode2D();
       break;
 
     case SCREEN_MENU:
-      DrawMenuScreen(sW, sH);
+      DrawMenuScreen(button, cbutton, screen, mouse, &current_screen);
       break;
     }
 

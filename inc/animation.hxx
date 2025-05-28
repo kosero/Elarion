@@ -4,30 +4,30 @@
 #include <cstdint>
 #include <raylib.h>
 
-struct Frame
+typedef struct s_frame
 {
   int16_t first;
   int16_t last;
   int16_t current;
-};
+} t_frame;
 
-struct Animation
+typedef struct s_animation
 {
-  Frame frame;
+  t_frame frame;
   float speed;
   float duration_left;
   Vector2 resolution;
   bool is_flipped;
-};
+} t_animation;
 
-class Animator
+class c_animation
 {
 public:
-  void Init(Animation *anim, Frame frame, float speed, Vector2 resolution,
-            bool is_flipped);
-  void Refresh(Animation *anim, float delta);
-  void Draw(Animation *anim, Texture2D texture, Vector2 position, int16_t scale,
-            int16_t frames_per_row);
+  void Init(t_animation &animation, t_frame &frame, float speed,
+            Vector2 &resolution, bool is_flipped);
+  void Refresh(t_animation &animation, float delta);
+  void Draw(t_animation &animation, Texture2D &texture, Vector2 &position,
+            int16_t scale, int16_t frames_per_row);
 };
 
 #endif

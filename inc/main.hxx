@@ -1,16 +1,18 @@
 #ifndef MAIN_HXX
 #define MAIN_HXX
 
+#include <raylib.h>
+
 #define SWIDTH 800
 #define SHEIGHT 600
 
-#define FLOOR {76, 129, 73, 1}
-#define BG {66, 73, 73, 1}
+constexpr Color FLOOR{76, 129, 73, 1};
+constexpr Color BG{30, 33, 36, 0};
 
 typedef enum
 {
   SCREEN_MENU,
   SCREEN_GAME,
-} ScreenState;
+} t_screen_state;
 
 #endif

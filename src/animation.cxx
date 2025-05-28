@@ -3,56 +3,56 @@
 
 #include "animation.hxx"
 
-void Animator::Init(Animation *anim, Frame frame, float speed,
-                    Vector2 resolution, bool is_flipped)
+void c_animation::Init(t_animation &animation, t_frame &frame, float speed,
+                       Vector2 &resolution, bool is_flipped)
 {
-  anim->frame = frame;
-  anim->speed = speed;
-  anim->duration_left = speed;
-  anim->resolution = resolution;
-  anim->is_flipped = is_flipped;
+  animation.frame = frame;
+  animation.speed = speed;
+  animation.duration_left = speed;
+  animation.resolution = resolution;
+  animation.is_flipped = is_flipped;
 }
 
-void Animator::Refresh(Animation *anim, float delta)
+void c_animation::Refresh(t_animation &animation, float delta)
 {
-  anim->duration_left -= delta;
+  animation.duration_left -= delta;
 
-  if (anim->duration_left <= 0.0f)
+  if (animation.duration_left <= 0.0f)
   {
-    anim->duration_left = anim->speed;
-    anim->frame.current++;
+    animation.duration_left = animation.speed;
+    animation.frame.current++;
 
-    if (anim->frame.current > anim->frame.last)
+    if (animation.frame.current > animation.frame.last)
     {
-      anim->frame.current = anim->frame.first;
+      animation.frame.current = animation.frame.first;
     }
   }
 }
 
-static Rectangle get_frame_rect(Animation *anim, int16_t frames_per_row)
+static Rectangle get_frame_rect(t_animation &animation, int16_t frames_per_row)
 {
-  int16_t frame_index_x = anim->frame.current % frames_per_row;
-  int16_t frame_index_y = anim->frame.current / frames_per_row;
+  int16_t frame_index_x = animation.frame.current % frames_per_row;
+  int16_t frame_index_y = animation.frame.current / frames_per_row;
 
-  float x = static_cast<float>(frame_index_x) * anim->resolution.x;
-  float y = static_cast<float>(frame_index_y) * anim->resolution.y;
+  float x = static_cast<float>(frame_index_x) * animation.resolution.x;
+  float y = static_cast<float>(frame_index_y) * animation.resolution.y;
 
-  return Rectangle{x, y, anim->resolution.x, anim->resolution.y};
+  return Rectangle{x, y, animation.resolution.x, animation.resolution.y};
 }
 
-void Animator::Draw(Animation *anim, Texture2D texture, Vector2 position,
-                    int16_t scale, int16_t frames_per_row)
+void c_animation::Draw(t_animation &animation, Texture2D &texture,
+                       Vector2 &position, int16_t scale, int16_t frames_per_row)
 {
-  Rectangle src = get_frame_rect(anim, frames_per_row);
+  Rectangle src = get_frame_rect(animation, frames_per_row);
 
-  if (anim->is_flipped)
+  if (animation.is_flipped)
   {
-    src.x += anim->resolution.x;
+    src.x += animation.resolution.x;
     src.width *= -1;
   }
 
-  float scaled_width = anim->resolution.x * static_cast<float>(scale);
-  float scaled_height = anim->resolution.y * static_cast<float>(scale);
+  float scaled_width = animation.resolution.x * static_cast<float>(scale);
+  float scaled_height = animation.resolution.y * static_cast<float>(scale);
   Rectangle dest{position.x, position.y, scaled_width, scaled_height};
 
   DrawTexturePro(texture, src, dest, {0, 0}, 0.0f, WHITE);

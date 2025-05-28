@@ -4,28 +4,27 @@
 #include "animation.hxx"
 #include <raylib.h>
 
-struct State
+typedef struct s_player_state
 {
   bool IDLE;
   bool WALKING;
-};
+} t_player_state;
 
-struct Player
+typedef struct s_player
 {
-  Vector2 position;
+  Vector2 position = {0, 0};
   Vector2 velocity;
-  float speed;
+  float speed = 300.0f;
   Vector2 hitbox;
   Camera2D camera;
-  State state;
-};
+  t_player_state state;
+} t_player;
 
-class PlayerManager
+class c_player
 {
 public:
-  Player Init(Vector2 position, float speed, Vector2 hitbox);
-  void Refresh(Player *player, Animation *anim, Animator *animator,
-               float delta);
+  void Refresh(t_player *player, t_animation *sanimation,
+               c_animation *canimation, float delta);
 };
 
 #endif // !PLAYER_H
