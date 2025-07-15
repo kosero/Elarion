@@ -7,20 +7,21 @@
 
 #include <raylib.h>
 
-struct player_s {
+class player_c {
+public:
   Vector2     pos; // position
   Vector2     vel; // velocity
   const float speed;
 
-  // Camera2D cam; // camera
+  static Texture2D texture;
 
-  // bool isWalking;
+  static void loadTexture();
+  static void unloadTexture();
+
+  explicit player_c(Vector2 p = {0.0f, 0.0f}, Vector2 v = {0, 0},
+                    float   s = 300.0f);
+
+  static void Refresh(player_c *p);
 };
 
-
-class player_c {
-public:
-  static void Refresh(player_s *p);
-};
-
-#endif //PLAYER_HXX
+#endif // PLAYER_HXX

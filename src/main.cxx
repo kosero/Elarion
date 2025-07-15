@@ -1,12 +1,20 @@
+//
+// Created by kosero on 15.07.2025.
+//
+
+#include "animation.hxx"
 #include "game_loop.hxx"
 #include "window.hxx"
 
 int main() {
-  window_c window;
+  const window_c window;
   window.init();
-  player_s player;
 
-  while (!window_c::shouldClose()) { game_loop(&player); }
+  player_c           player;
+  static animation_c anim;
+
+  while (!window_c::shouldClose()) { game_loop(&player, &anim); }
 
   window_c::close();
+  return 0;
 }

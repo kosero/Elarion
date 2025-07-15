@@ -4,16 +4,17 @@
 
 #include <raylib.h>
 #include "game_loop.hxx"
+#include "animation.hxx"
 #include "player.hxx"
 
-void game_loop(player_s *player) {
+
+void game_loop(player_c *   player,
+               animation_c *anim) {
   BeginDrawing();
   ClearBackground(RAYWHITE);
 
-  DrawCircle(static_cast<int>(player->pos.x),
-             static_cast<int>(player->pos.y),
-             50.0f, RED);
-
+  anim->update();
+  anim->draw(player_c::texture, *player, 6.0f);
   EndDrawing();
 
   player_c::Refresh(player);

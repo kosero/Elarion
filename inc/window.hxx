@@ -1,3 +1,7 @@
+//
+// Created by kosero on 15.07.2025.
+//
+
 #ifndef WINDOW_HXX
 #define WINDOW_HXX
 
@@ -11,8 +15,8 @@ public:
 
 private:
   const char *title;
-  int         width;
-  int         height;
+  const int   width;
+  const int   height;
 };
 
 #endif // WINDOW_HXX
