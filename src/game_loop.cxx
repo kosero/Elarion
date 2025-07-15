@@ -7,7 +7,14 @@
 #include "player.hxx"
 
 void game_loop(player_s *player) {
-  DrawCircle(static_cast<int>(player->pos.x), static_cast<int>(player->pos.x),
+  BeginDrawing();
+  ClearBackground(RAYWHITE);
+
+  DrawCircle(static_cast<int>(player->pos.x),
+             static_cast<int>(player->pos.y),
              50.0f, RED);
+
+  EndDrawing();
+
   player_c::Refresh(player);
 }
